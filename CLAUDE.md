@@ -1,50 +1,50 @@
-# CLAUDE.md — AI Assistant Guide for claude-skill
+# CLAUDE.md — AIアシスタント向けリポジトリガイド
 
-This file provides context for AI assistants (Claude, Copilot, etc.) working in this repository.
-
----
-
-## Repository Overview
-
-This is a **content operations management repository** for AI-driven content creation and distribution. It provides reusable AI skills, prompt templates, and automation workflows targeting Japanese-speaking AI users (beginners to intermediate).
-
-**Primary Goal:** Automate the pipeline from AI news collection → summarization → SNS posting → article creation, reducing content distribution work time by ~80%.
-
-**Brand identity:** くろ🦉 — warm, sincere, practical tone. AI + time-saving focused.
+このファイルは、本リポジトリで作業するAIアシスタント（Claude、Copilotなど）向けのコンテキスト情報です。
 
 ---
 
-## Repository Structure
+## リポジトリ概要
+
+AIによるコンテンツ作成・配信を管理する**コンテンツオペレーション管理リポジトリ**です。日本語話者のAIユーザー（初心者〜中級者）を対象に、再利用可能なAIスキル、プロンプトテンプレート、自動化ワークフローを提供します。
+
+**目的:** AIニュース収集 → 要約 → SNS投稿 → 記事作成のパイプラインを自動化し、情報発信業務を約80%削減すること。
+
+**ブランドアイデンティティ:** くろ🦉 — 温かく、誠実で、実践的なトーン。AI × 時短をテーマとする。
+
+---
+
+## ディレクトリ構成
 
 ```
 claude-skill/
 ├── .github/workflows/
-│   └── content-check.yml        # CI: validates skill/prompt files via Python
-├── check_prompts.py             # Content validation script (runs in CI)
+│   └── content-check.yml        # CI: Pythonスクリプトでスキル/プロンプトを検証
+├── check_prompts.py             # コンテンツ検証スクリプト（CIで実行）
 ├── docs/
-│   └── usage-guide.md           # How to use skills and run workflows
+│   └── usage-guide.md           # スキル・ワークフローの使い方
 ├── product/
-│   └── vision.md                # Product strategy and goals
+│   └── vision.md                # プロダクト戦略・目標
 ├── project/
-│   └── PROJECT_INSTRUCTIONS.md  # Brand rules, content style guide (critical)
-├── prompts/                     # Standalone prompt templates
+│   └── PROJECT_INSTRUCTIONS.md  # ブランドルール・コンテンツスタイルガイド（最重要）
+├── prompts/                     # スタンドアロンのプロンプトテンプレート
 │   ├── ai-news-pipeline.md
 │   ├── daily-reflection.md
 │   └── x-post/
 │       └── sample-x-post-prompt.md
-├── skills/                      # Reusable AI skills
+├── skills/                      # 再利用可能なAIスキル
 │   ├── daily-reflection.md
-│   ├── 投稿｜X投稿文作成スキル  # X post generation skill
-│   ├── 要約│ニュース要約スキル  # News summarization skill
-│   ├── Skill: dispatche         # Skill dispatcher/router
+│   ├── 投稿｜X投稿文作成スキル  # X投稿生成スキル
+│   ├── 要約│ニュース要約スキル  # ニュース要約スキル
+│   ├── Skill: dispatche         # スキルディスパッチャー（振り分け）
 │   ├── 図解イラスト作成/
-│   │   └── SKILL.md             # Infographic generation skill
+│   │   └── SKILL.md             # 図解・インフォグラフィック生成スキル
 │   └── 投稿│トレンド/
-│       └── SKILL.md             # AI trend summarization skill
+│       └── SKILL.md             # AIトレンド要約スキル
 ├── templates/
-│   ├── skill-template.md        # Boilerplate for new skills
-│   └── workflow-template.md     # Boilerplate for new workflows
-└── workflows/                   # Multi-step automation workflows
+│   ├── skill-template.md        # 新規スキル作成用テンプレート
+│   └── workflow-template.md     # 新規ワークフロー作成用テンプレート
+└── workflows/                   # 複数ステップの自動化ワークフロー
     ├── ai-news-pipeline.md
     ├── ai-news-to-x-post.md
     └── claude-make-automation.md
@@ -52,156 +52,156 @@ claude-skill/
 
 ---
 
-## Development Workflows
+## 開発ワークフロー
 
-### Validation
+### バリデーション
 
-There is no build system. The primary development action is running the content validation script:
+ビルドシステムはありません。主な開発作業はコンテンツ検証スクリプトの実行です：
 
 ```bash
 python check_prompts.py
 ```
 
-This script scans `skills/`, `prompts/`, and `project/` directories and checks:
+このスクリプトは `skills/`、`prompts/`、`project/` を走査し、以下を確認します：
 
-- **Errors (fail CI):**
-  - `project/PROJECT_INSTRUCTIONS.md` must contain: `## 目的`, `## トーン・文体`, `## 出力ルール`, `## 禁止事項`
-  - Files in `prompts/*.md` must contain: `## 目的`, `## 出力条件`
+- **エラー（CIを失敗させる）:**
+  - `project/PROJECT_INSTRUCTIONS.md` に必須セクションが含まれていること: `## 目的`, `## トーン・文体`, `## 出力ルール`, `## 禁止事項`
+  - `prompts/*.md` に必須セクションが含まれていること: `## 目的`, `## 出力条件`
 
-- **Warnings (print but do not fail):**
-  - Missing H1 (`#`) header
-  - File size > 6000 characters
-  - No citation / URL / reference information
-  - Typography inconsistencies (e.g., "Git hub" instead of "GitHub", "chatgpt" instead of "ChatGPT")
-  - Forbidden expressions: "神すぎる", "やばい"
+- **警告（ビルドを失敗させない）:**
+  - H1ヘッダー（`#`）がない
+  - ファイルサイズが6000文字を超えている
+  - 引用・URL・出典情報がない
+  - 表記ゆれ（例：「Git hub」→「GitHub」、「chatgpt」→「ChatGPT」）
+  - 禁止表現の使用：「神すぎる」「やばい」
 
 ### CI/CD
 
-GitHub Actions runs automatically on push when any of these paths change:
+以下のパスに変更がプッシュされたとき、GitHub Actionsが自動実行されます：
 
 - `skills/**/*.md`
 - `prompts/**/*.md`
 - `project/**/*.md`
 - `check_prompts.py`
 
-The workflow uses Python 3.11 and exits non-zero on validation errors.
+ワークフローはPython 3.11を使用し、バリデーションエラーがある場合は非ゼロで終了します。
 
 ---
 
-## Key Conventions
+## 重要なコンベンション
 
-### Language
+### 言語
 
-- **All skill/prompt content must be written in Japanese.** This is a hard rule from `PROJECT_INSTRUCTIONS.md`.
-- Code, scripts, config files, and this `CLAUDE.md` use English.
-- File and directory names may use Japanese (e.g., `図解イラスト作成/`).
+- **スキル・プロンプトのコンテンツはすべて日本語で記述する。** これは `PROJECT_INSTRUCTIONS.md` のハードルールです。
+- コード、スクリプト、設定ファイルは英語を使用します。
+- ファイル名やディレクトリ名は日本語でも構いません（例：`図解イラスト作成/`）。
 
-### Content Style (Brand Voice)
+### コンテンツスタイル（ブランドボイス）
 
-Defined in `project/PROJECT_INSTRUCTIONS.md`. Key rules:
+`project/PROJECT_INSTRUCTIONS.md` に定義されています。主なルール：
 
-- **Tone:** Warmth + sincerity + practicality. Friendly but not superficial.
-- **Priority order:** Accuracy > Readability > Practicality > Reusability > Brand consistency
-- **Avoid:** Hyperbole, unsourced claims, excessive positivity, informal slang ("神すぎる", "やばい")
-- **X posts:** Target ~180 characters standard, max ~220
-- **Sources:** Always cite sources; mark unknown sources as `出典不明`
-- **Brand emojis:** 🦉 📡 ⚡️ 🧠 🛠️ 📝 🤖 💼 💬 📌
+- **トーン:** 温かさ＋誠実さ＋実践性。親しみやすくも軽すぎない。
+- **優先順位:** 正確さ ＞ 読みやすさ ＞ 実用性 ＞ 再利用性 ＞ ブランド一貫性
+- **避けること:** 誇張表現、出典不明の主張、過剰な肯定表現、俗語（「神すぎる」「やばい」）
+- **X投稿:** 標準180文字前後、最大220文字程度
+- **出典:** 必ず引用元を記載。不明な場合は `出典不明` と明記する
+- **ブランド絵文字:** 🦉 📡 ⚡️ 🧠 🛠️ 📝 🤖 💼 💬 📌
 
-### Skill File Structure
+### スキルファイルの構成
 
-New skills should follow this pattern (see `templates/skill-template.md`):
+新しいスキルは以下のパターンに従ってください（`templates/skill-template.md` 参照）：
 
 ```markdown
-# Skill: [Name]
+# Skill: [スキル名]
 
 ## トリガー
-[Keywords/phrases that activate this skill]
+[このスキルを起動するキーワード・フレーズ]
 
 ## 役割
-[What this skill does]
+[このスキルが行うこと]
 
-## [Content Sections]
-[Implementation details]
+## [コンテンツセクション]
+[実装の詳細]
 
 ## 出力ルール / 出力形式
-[How output should be formatted]
+[出力の形式・フォーマット]
 ```
 
-### Workflow File Structure
+### ワークフローファイルの構成
 
-New workflows should follow `templates/workflow-template.md`. Workflows chain multiple skills together into a pipeline.
+新しいワークフローは `templates/workflow-template.md` に従ってください。ワークフローは複数のスキルをパイプラインとして連結したものです。
 
-### Infographic Design Rules (skills/図解イラスト作成/SKILL.md)
+### 図解デザインルール（skills/図解イラスト作成/SKILL.md）
 
-This skill has strict design constraints:
+このスキルには厳格なデザイン制約があります：
 
-- **Priority:** Readability >> Aesthetics >> Decoration
-- **Colors:** White, off-white, warm beige, soft pastels — **no dark/neon/cyberpunk themes**
-- **Layout:** 3-6 content blocks, generous whitespace, paper-like aesthetic
-- **Text:** Large and readable, 1-2 lines per block, max 10 items per composition
-- **Aspect ratios:** 9:16 (vertical/SNS), 16:9 (landscape), 5:2 (header banner)
-
----
-
-## File Naming
-
-| Type | Convention | Example |
-|------|-----------|---------|
-| Skills | Japanese descriptive name | `投稿｜X投稿文作成スキル` |
-| Skill directories | Japanese topic + `/SKILL.md` | `図解イラスト作成/SKILL.md` |
-| Prompts | Kebab-case English | `ai-news-pipeline.md` |
-| Workflows | Kebab-case English | `ai-news-to-x-post.md` |
-| Templates | Kebab-case English | `skill-template.md` |
+- **優先度:** 読みやすさ ＞＞ 美しさ ＞＞ 装飾
+- **色:** 白・オフホワイト・温かみのあるベージュ・柔らかいパステル — **ダーク・ネオン・サイバーパンク調は禁止**
+- **レイアウト:** コンテンツブロック3〜6個、余白を広く取る、紙のような質感
+- **テキスト:** 大きく読みやすく、1ブロックに1〜2行、1構成に最大10要素まで
+- **アスペクト比:** 9:16（縦型/SNS）、16:9（横型）、5:2（ヘッダーバナー）
 
 ---
 
-## Adding New Content
+## ファイル命名規則
 
-### Adding a New Skill
-
-1. Copy `templates/skill-template.md` to `skills/` with a Japanese filename
-2. Fill in all required sections (role, triggers, output format)
-3. Ensure content follows brand guidelines in `project/PROJECT_INSTRUCTIONS.md`
-4. Run `python check_prompts.py` to validate
-5. Commit — CI will validate automatically
-
-### Adding a New Prompt
-
-1. Create a `.md` file under `prompts/`
-2. **Required sections:** `## 目的` and `## 出力条件`
-3. Run `python check_prompts.py` to validate
-
-### Adding a New Workflow
-
-1. Copy `templates/workflow-template.md` to `workflows/`
-2. Document each step and the skills it calls
-3. No automated validation beyond CI — focus on clarity
+| 種類 | 規則 | 例 |
+|------|------|----|
+| スキル | 日本語の説明的な名前 | `投稿｜X投稿文作成スキル` |
+| スキルディレクトリ | 日本語トピック + `/SKILL.md` | `図解イラスト作成/SKILL.md` |
+| プロンプト | ケバブケース英語 | `ai-news-pipeline.md` |
+| ワークフロー | ケバブケース英語 | `ai-news-to-x-post.md` |
+| テンプレート | ケバブケース英語 | `skill-template.md` |
 
 ---
 
-## Git Configuration
+## 新規コンテンツの追加方法
 
-- **Commit signing:** SSH-based signing is enabled (`gpg.format=ssh`)
-- **Main branch:** `main`
-- **Feature branches:** Use descriptive names (e.g., `claude/add-claude-documentation-x0uvo`)
-- No custom git hooks are installed
+### 新しいスキルを追加する
+
+1. `templates/skill-template.md` を `skills/` にコピーし、日本語ファイル名をつける
+2. 必須セクション（役割、トリガー、出力形式）をすべて記入する
+3. `project/PROJECT_INSTRUCTIONS.md` のブランドガイドラインに従っているか確認する
+4. `python check_prompts.py` でバリデーションを実行する
+5. コミット — CIが自動検証する
+
+### 新しいプロンプトを追加する
+
+1. `prompts/` 配下に `.md` ファイルを作成する
+2. **必須セクション:** `## 目的` と `## 出力条件`
+3. `python check_prompts.py` でバリデーションを実行する
+
+### 新しいワークフローを追加する
+
+1. `templates/workflow-template.md` を `workflows/` にコピーする
+2. 各ステップと呼び出すスキルをドキュメント化する
+3. CI自動バリデーションはないため、記述の明確さを重視する
 
 ---
 
-## What This Repository Is Not
+## Git設定
 
-- Not a compiled application — there is no `npm`, `pip install`, or build step
-- Not a Python package — `check_prompts.py` is a standalone script
-- Not an API service — workflows describe automation patterns, not deployed code
-- Not English-first — all user-facing content is Japanese
+- **コミット署名:** SSHベースの署名が有効（`gpg.format=ssh`）
+- **メインブランチ:** `main`
+- **フィーチャーブランチ:** 説明的な名前を使用（例：`claude/add-claude-documentation-x0uvo`）
+- カスタムgitフックは設定されていない
 
 ---
 
-## Critical Files to Read First
+## このリポジトリではないもの
 
-If working on this repository, read these files in order:
+- コンパイルされるアプリケーションではありません — `npm`、`pip install`、ビルドステップはありません
+- Pythonパッケージではありません — `check_prompts.py` はスタンドアロンスクリプトです
+- APIサービスではありません — ワークフローは自動化パターンを記述するものであり、デプロイされるコードではありません
+- 英語優先ではありません — ユーザー向けコンテンツはすべて日本語です
 
-1. `project/PROJECT_INSTRUCTIONS.md` — brand rules and content constraints (highest authority)
-2. `product/vision.md` — product strategy and goals
-3. `docs/usage-guide.md` — how skills and workflows are used
-4. `check_prompts.py` — understand what the validator enforces
+---
+
+## 最初に読むべき重要ファイル
+
+このリポジトリで作業する場合、以下の順に読んでください：
+
+1. `project/PROJECT_INSTRUCTIONS.md` — ブランドルールとコンテンツ制約（最高権威）
+2. `product/vision.md` — プロダクト戦略と目標
+3. `docs/usage-guide.md` — スキルとワークフローの使い方
+4. `check_prompts.py` — バリデーターが何を強制しているかを把握する
